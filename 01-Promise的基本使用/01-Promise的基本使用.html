@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Promise</title>
+</head>
+<body>
+<script>
+    // 参数： 函数（resolve，reject)
+    // resolve,reject本身又是函数
+    // 链式编程
+    new Promise((resolve,reject ) => {
+
+        //第一次网络请求的代码
+        setTimeout( () => {
+            resolve()
+        },1000)
+
+    }).then(() => {
+        // 第一次拿到结果的处理代码
+        console.log('works')
+        console.log('works')
+        console.log('works')
+        console.log('works')
+
+        return new Promise((resolve , reject) => {
+
+            // 第二次网络请求的代码
+            setTimeout( () => {
+                resolve();
+            },1000)
+        })
+    }).then(() => {
+        // 第二次拿到结果的处理代码
+        console.log('works')
+        console.log('works')
+        console.log('works')
+        console.log('works')
+
+        return new Promise((resolve , reject) => {
+
+            // 第三次网络请求的代码
+            setTimeout( () => {
+                resolve();
+            },1000)
+        })
+    }).then(() => {
+
+        // 第三次拿到结果的处理代码
+        console.log('works')
+        console.log('works')
+        console.log('works')
+        console.log('works')
+
+    });
+
+
+
+    new Promise ((resolve ,reject ) => {
+        setTimeout(() =>{
+            resolve()
+        },1000)
+    }).then(() => {
+        console.log('singe works')
+
+        // 如果需要发送第二次请求，在此return 一个new Promise
+        return new Promise((resolve,reject) => {
+            setTimeout(() => {
+                resolve();
+            },1000)
+        })
+    }).then(() => {
+        console.log('mul works')
+    })
+
+
+//    什么时候使用Promise？
+//    一般清空下，有异步操作时，使用Promise对这个异步操作进行封装
+//    new Promise  ---> 构造函数（1.保存了一些状态信息  2.执行传入的函数）
+//    在执行传入的回调函数时，会传入两个参数，resolve，reject，本身又是函数
+    new Promise((resolve,reject) => {
+        setTimeout(() => {
+            //需要传入数据必须通过resolve()中传入，传入后会传到then()里面，才执行需要的操作
+            resolve('Hello Promise');
+            reject('err message')
+        },1000)
+    }).then((data) =>{
+        // ...处理数据
+        console.log(data);
+        console.log(data);
+        console.log(data);
+        console.log(data);
+        console.log(data);
+    }).catch((err) => {
+        console.log(err)
+    })
+
+    // 另一种写法，将resolve和reject同时写入到then(()=>{},()=>{})里面,先resolve后reject
+    new Promise((resolve,reject) => {
+        setTimeout(()=>{
+            resolve('Hello Promise');
+            reject('err message')
+            },
+            1000)
+    //    下面then中传入的就是resolve和reject传入的参数
+    }).then((data)=>{
+            console.log(data)
+        },
+        (err)=>{
+            console.log(err)
+    })
+</script>
+</body>
+</html>

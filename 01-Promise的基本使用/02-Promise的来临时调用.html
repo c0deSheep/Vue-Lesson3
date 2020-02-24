@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Promise</title>
+</head>
+<body>
+<script>
+    // wrapped into
+    // 网络请求: data -> 自己处理(10行)
+    // 处理:data111111time ->自己处理(10行)
+    // 处理：data11111time222222time ->自己处理（10行）
+    // new Promise((resolve,reject)=>{
+    //     //异步处理
+    //     setTimeout( () => {
+    //         resolve('data')
+    //     },1000)
+    // }).then( data => {
+    //   // 1.自己处理10行代码
+    //     console.log(data,'第一层的10行处理代码')
+    //
+    // //  2.对结果进行第一次处理
+    //     return new Promise((resolve) => {
+    //         resolve(data + '111111time');
+    //     })
+    // }).then( data => {
+    //     console.log(data, '第二层的10行处理代码')
+    //
+    //     return new Promise(resolve => {
+    //         resolve(data + '222222time')
+    //     })
+    // }).then(data => {
+    //     console.log(data, '第三层10行代码处理')
+    // })
+
+// -----------------------------------------------------------------------
+//         //return new Promise((resolve) => {resolve(数据处理)})简写  ---->   return Promise.resolve(数据处理)
+
+    //     new Promise((resolve,reject)=>{
+//         //异步处理
+//         setTimeout( () => {
+//             resolve('data')
+//         },1000)
+//     }).then( data => {
+//         // 1.自己处理10行代码
+//         console.log(data,'第一层的10行处理代码')
+//
+//         //  2.对结果进行第一次处理
+//         return Promise.resolve(data + '111111time')
+//
+//     }).then( data => {
+//         console.log(data, '第二层的10行处理代码')
+//
+//         return Promise.resolve(data + '222222time')
+//     }).then(data => {
+//         console.log(data, '第三层10行代码处理')
+//     })
+
+
+
+// ----------------------------------------------------------------------
+
+    // return new Promise((resolve) => {resolve(数据处理)})
+    // -----【简写】 --->   return Promise.resolve(数据处理)
+    // -----【继续简写】 ---> return 数据处理
+
+//     new Promise((resolve,reject)=>{
+//         //异步处理
+//         setTimeout( () => {
+//             resolve('data')
+//         },1000)
+//     }).then( data => {
+//         // 1.自己处理10行代码
+//         console.log(data,'第一层的10行处理代码')
+//
+//         //  2.对结果进行第一次处理
+//         return data + '111111time'
+//
+//     }).then( data => {
+//         console.log(data, '第二层的10行处理代码')
+//
+//         return data + '222222time'
+//     }).then(data => {
+//         console.log(data, '第三层10行代码处理')
+//     })
+
+
+
+
+
+
+//--------------------------报错reject的写法1---------------------
+    new Promise((resolve,reject)=>{
+        //异步处理
+        setTimeout( () => {
+            resolve('data')
+        },1000)
+    }).then( data => {
+        // 1.自己处理10行代码
+        console.log(data,'第一层的10行处理代码')
+
+        //  2.对结果进行第一次处理
+        return new Promise((resolve,reject) => {
+            // resolve(data + '111111time');
+
+        //    报错执行方法,传入的也是一个数据，这个数据会传递到catch
+            reject('err')
+        })
+    }).then( data => {
+        console.log(data, '第二层的10行处理代码')
+
+        return data + '222222time'
+    }).then(data => {
+        console.log(data, '第三层10行代码处理')
+    }).catch(err => {
+        console.log(err)
+    })
+
+// ----------------------------------报错reject的写法2---------------------
+//     将return new Promise((resolve,reject) => {
+    //    报错执行方法,传入的也是一个数据，这个数据会传递到catch
+    // reject('err')
+    // })
+    //直接改为return  Promise.reject('err message')
+    new Promise((resolve,reject)=>{
+        //异步处理
+        setTimeout( () => {
+            resolve('data')
+        },1000)
+    }).then( data => {
+        // 1.自己处理10行代码
+        console.log(data,'第一层的10行处理代码')
+
+        //  2.对结果进行第一次处理,报错reject的写法2的简写
+
+        return  Promise.reject('err message')
+
+    }).then( data => {
+        console.log(data, '第二层的10行处理代码')
+
+        return data + '222222time'
+    }).then(data => {
+        console.log(data, '第三层10行代码处理')
+    }).catch(err => {
+        console.log(err)
+    })
+
+    //----------------------------------报错reject的写法3---------------------
+    // 改return  Promise.reject('err message') 为throw 'err message'
+    new Promise((resolve,reject)=>{
+        //异步处理
+        setTimeout( () => {
+            resolve('data')
+        },1000)
+    }).then( data => {
+        // 1.自己处理10行代码
+        console.log(data,'第一层的10行处理代码')
+
+        //  2.对结果进行第一次处理,报错reject的写法2的简写
+
+        throw 'err message'
+
+    }).then( data => {
+        console.log(data, '第二层的10行处理代码')
+
+        return data + '222222time'
+    }).then(data => {
+        console.log(data, '第三层10行代码处理')
+    }).catch(err => {
+        console.log(err)
+    })
+
+</script>
+</body>
+</html>
